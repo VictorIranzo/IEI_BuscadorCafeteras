@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appContext">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ControllerViewApp">
    <children>
       <VBox spacing="20.0">
          <children>
@@ -20,7 +20,7 @@
             </HBox>
             <CheckBox fx:id="checkMediaMarkt" mnemonicParsing="false" text="MediaMarkt" />
             <CheckBox fx:id="checkFnac" mnemonicParsing="false" text="Fnac" />
-            <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#click_Buscar" text="Buscar">
+            <Button fx:id="btnBuscar" mnemonicParsing="false" text="Buscar" onAction="#click_Buscar">
                <VBox.margin>
                   <Insets top="80.0" />
                </VBox.margin>
