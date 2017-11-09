@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="appContext">
+   <children>
+      <VBox spacing="20.0">
+         <children>
+            <HBox spacing="10.0">
+               <children>
+                  <Label text="Artículo:" />
+                  <ComboBox fx:id="comboArticulo" prefWidth="250.0" />
+               </children>
+            </HBox>
+            <CheckBox fx:id="checkMediaMarkt" mnemonicParsing="false" text="MediaMarkt" />
+            <CheckBox fx:id="checkFnac" mnemonicParsing="false" text="Fnac" />
+            <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#click_Buscar" text="Buscar">
+               <VBox.margin>
+                  <Insets top="80.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+      </VBox>
+      <VBox spacing="10.0">
+         <children>
+            <Label text="Marcas:">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <CheckBox fx:id="chTaurus" mnemonicParsing="false" text="Taurus" />
+            <CheckBox fx:id="chDelongui" mnemonicParsing="false" text="Delongui" />
+            <CheckBox fx:id="chBosch" mnemonicParsing="false" text="Bosch" />
+            <CheckBox fx:id="chPhilips" mnemonicParsing="false" text="Philips" />
+            <CheckBox fx:id="chJata" mnemonicParsing="false" text="Jata" />
+            <CheckBox fx:id="chKrups" mnemonicParsing="false" text="Krups" />
+            <CheckBox fx:id="chJura" mnemonicParsing="false" text="Jura" />
+         </children>
+         <HBox.margin>
+            <Insets right="50.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</HBox>
