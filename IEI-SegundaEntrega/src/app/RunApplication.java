@@ -16,6 +16,9 @@ public class RunApplication extends Application{
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		
+		ControllerViewApp controller = loader.<ControllerViewApp>getController();
+		controller.initializeLayout();
+		
 		stage.setScene(scene);		
 		stage.show();
 	}
