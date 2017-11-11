@@ -5,52 +5,67 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ControllerViewApp">
+
+<VBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ControllerViewApp">
    <children>
-      <VBox spacing="20.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0">
          <children>
-            <HBox spacing="10.0">
+            <VBox spacing="20.0">
                <children>
-                  <Label text="Artículo:" />
-                  <ComboBox fx:id="comboArticulo" prefWidth="250.0" />
+                  <HBox spacing="10.0">
+                     <children>
+                        <Label text="Artículo:" />
+                        <ComboBox fx:id="comboArticulo" prefWidth="250.0" />
+                     </children>
+                  </HBox>
+                  <CheckBox fx:id="checkMediaMarkt" mnemonicParsing="false" text="MediaMarkt" />
+                  <CheckBox fx:id="checkFnac" mnemonicParsing="false" text="Fnac" />
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#click_Buscar" text="Buscar">
+                     <VBox.margin>
+                        <Insets top="80.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
-            </HBox>
-            <CheckBox fx:id="checkMediaMarkt" mnemonicParsing="false" text="MediaMarkt" />
-            <CheckBox fx:id="checkFnac" mnemonicParsing="false" text="Fnac" />
-            <Button fx:id="btnBuscar" mnemonicParsing="false" text="Buscar" onAction="#click_Buscar">
-               <VBox.margin>
-                  <Insets top="80.0" />
-               </VBox.margin>
-            </Button>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox spacing="10.0">
+               <children>
+                  <Label text="Marcas:">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <CheckBox fx:id="chTaurus" mnemonicParsing="false" text="Taurus" />
+                  <CheckBox fx:id="chDelongui" mnemonicParsing="false" text="Delongui" />
+                  <CheckBox fx:id="chBosch" mnemonicParsing="false" text="Bosch" />
+                  <CheckBox fx:id="chPhilips" mnemonicParsing="false" text="Philips" />
+                  <CheckBox fx:id="chJata" mnemonicParsing="false" text="Jata" />
+                  <CheckBox fx:id="chKrups" mnemonicParsing="false" text="Krups" />
+                  <CheckBox fx:id="chJura" mnemonicParsing="false" text="Jura" />
+               </children>
+               <HBox.margin>
+                  <Insets right="50.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-         <HBox.margin>
+         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </HBox.margin>
-      </VBox>
-      <VBox spacing="10.0">
-         <children>
-            <Label text="Marcas:">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
-            <CheckBox fx:id="chTaurus" mnemonicParsing="false" text="Taurus" />
-            <CheckBox fx:id="chDelongui" mnemonicParsing="false" text="Delongui" />
-            <CheckBox fx:id="chBosch" mnemonicParsing="false" text="Bosch" />
-            <CheckBox fx:id="chPhilips" mnemonicParsing="false" text="Philips" />
-            <CheckBox fx:id="chJata" mnemonicParsing="false" text="Jata" />
-            <CheckBox fx:id="chKrups" mnemonicParsing="false" text="Krups" />
-            <CheckBox fx:id="chJura" mnemonicParsing="false" text="Jura" />
-         </children>
-         <HBox.margin>
-            <Insets right="50.0" />
-         </HBox.margin>
-      </VBox>
+         </padding>
+      </HBox>
+      <TableView fx:id="tablaResultados" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="colModelo" prefWidth="300.0" text="Modelo" />
+          <TableColumn fx:id="colMarca" prefWidth="75.0" text="Marca" />
+            <TableColumn fx:id="colMediaMarkt" prefWidth="75.0" text="MediaMarkt" />
+            <TableColumn fx:id="colFnac" prefWidth="75.0" text="Fnac" />
+        </columns>
+      </TableView>
    </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</HBox>
+</VBox>

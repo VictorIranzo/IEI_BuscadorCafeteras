@@ -9,12 +9,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import app.Cafetera;
+
 public class MediaMarktDriver {
 	private static String urlConnection = "http://tiendas.mediamarkt.es/cafeteras-cafe";
 	
-	public static void Search(String articulo, List<String> marcas) {
+	public static List<Cafetera> Search(String articulo, List<String> marcas) {
 		WebDriver driver = ChromeConnection.initChromeConnection(urlConnection);
-		
+		return null;
 
 	}
 
