@@ -21,8 +21,8 @@ public class MediaMarktDriver {
 	
 	public static List<Cafetera> Search(String articulo, List<String> marcas) {		
 		categoriasWebElements.get(articulo).click();
-		obtenerMarcasArticulo();
-		
+		//obtenerMarcasArticulo();
+		/*
 		for(String marca : marcas) 
 		{
 			if(marcasWebElements.containsKey(marca)) {
@@ -33,7 +33,19 @@ public class MediaMarktDriver {
 				marcasWebElements.get(marca).click();				
 			}
 		}
-		
+		*/
+		List<WebElement> elementos = driver.findElements(By.className("product10"));
+		for(WebElement element : elementos) {
+			//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
+			String modelo = element.findElement(By.className("product10Description"))
+							.findElement(By.tagName("span")).getText();
+			
+			String marca = element.findElement(By.className("product10brand"))
+							.findElement(By.tagName("img")).getAttribute("alt");
+			
+			double precioMM = Double.parseDouble(element.findElement(By.className("productPrices"))
+								.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
+		}
 		return new ArrayList<Cafetera>();
 	}
 
