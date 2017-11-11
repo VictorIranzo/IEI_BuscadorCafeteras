@@ -26,6 +26,8 @@ public class MediaMarktDriver {
 		for(String marca : marcas) 
 		{
 			if(marcasWebElements.containsKey(marca)) {
+				//TODO: Solucionar problema al seleccionar más de una marca. 
+				//Probar a guardar el index del element para luego volver a cogerlo, porque cambiar el WebElement.
 				WebDriverWait waiting = new WebDriverWait(driver, 5);
 				 waiting.until(ExpectedConditions.elementToBeClickable(marcasWebElements.get(marca)));
 				marcasWebElements.get(marca).click();				
