@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.google.common.base.Predicate;
 
 import app.Cafetera;
 
@@ -34,17 +38,25 @@ public class MediaMarktDriver {
 			}
 		}
 		*/
-		List<WebElement> elementos = driver.findElements(By.className("product10"));
-		for(WebElement element : elementos) {
-			//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
-			String modelo = element.findElement(By.className("product10Description"))
-							.findElement(By.tagName("span")).getText();
-			
-			String marca = element.findElement(By.className("product10brand"))
-							.findElement(By.tagName("img")).getAttribute("alt");
-			
-			double precioMM = Double.parseDouble(element.findElement(By.className("productPrices"))
-								.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
+		//Con este while miramos si quedan páginas por visitar
+		waitForPageLoad();
+		while(!driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).isEmpty()) {
+			List<WebElement> elementos = driver.findElements(By.className("product10"));
+			for(WebElement element : elementos) {
+				//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
+				String modelo = element.findElement(By.className("product10Description"))
+								.findElement(By.tagName("span")).getText();
+				
+				String marca = element.findElement(By.className("product10brand"))
+								.findElement(By.tagName("img")).getAttribute("alt");
+				
+				double precioMM = Double.parseDouble(element.findElement(By.className("productPrices"))
+									.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
+			}
+			//TODO: Comprobar si funciona la navegación entre páginas
+			scrollFinalPagina();
+			driver.findElement(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).click();
+			waitForPageLoad();
 		}
 		return new ArrayList<Cafetera>();
 	}
@@ -79,5 +91,13 @@ public class MediaMarktDriver {
 		}				
 		
 		return categoriasWebElements.keySet();
+	}
+	
+	private static void waitForPageLoad() {
+		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	}
+	
+	private static void scrollFinalPagina() {
+		((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 	}
 }
