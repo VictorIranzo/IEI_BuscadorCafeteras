@@ -56,7 +56,7 @@ public class MediaMarktDriver {
 				//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
 				WebElement modeloElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("product10Description"))));
 				String modelo = modeloElement.findElement(By.tagName("span")).getText();
-				
+				 
 				WebElement marcaElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("product10brand"))));
 				String marca = marcaElement.findElement(By.tagName("img")).getAttribute("alt");
 				
