@@ -39,26 +39,30 @@ public class MediaMarktDriver {
 		}
 		*/
 		//Con este while miramos si quedan páginas por visitar
+		
 		waitForPageLoad();
+		
+		WebDriverWait waiting = new WebDriverWait(driver,10);
 		
 		boolean continuar = true;
 		while(continuar)
 		{
 			waitForPageLoad();
-			continuar = !driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).isEmpty();
+			continuar = driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).size() > 1;
 			
 			List<WebElement> elementos = driver.findElements(By.className("product10"));
 			for(WebElement element : elementos) 
 			{
 				//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
-				String modelo = element.findElement(By.className("product10Description"))
-								.findElement(By.tagName("span")).getText();
+				WebElement modeloElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("product10Description"))));
+				String modelo = modeloElement.findElement(By.tagName("span")).getText();
 				
-				String marca = element.findElement(By.className("product10brand"))
-								.findElement(By.tagName("img")).getAttribute("alt");
+				WebElement marcaElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("product10brand"))));
+				String marca = marcaElement.findElement(By.tagName("img")).getAttribute("alt");
 				
-				double precioMM = Double.parseDouble(element.findElement(By.className("productPrices"))
-									.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
+				WebElement divPrecio = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("productPrices"))));
+				double precioMM = Double.parseDouble(divPrecio
+						.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
 			
 				cafeteras.add(new Cafetera(modelo,marca,precioMM,-1));
 			}
@@ -105,6 +109,7 @@ public class MediaMarktDriver {
 	}
 	
 	private static void waitForPageLoad() {
+		//TODO: Refactorizar porque no funciona.
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	}
 	
