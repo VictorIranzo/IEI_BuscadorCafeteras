@@ -70,8 +70,8 @@ public class ControllerViewApp {
     	List<String> marcasMarcadas= obtenerMarcasMarcadas();
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
     	List<Cafetera> resultado = new ArrayList<Cafetera>();
-    	if(checkMediaMarkt.isSelected()) resultado.addAll(MediaMarktDriver.Search(articulo, marcasMarcadas));
-    	if(checkFnac.isSelected()) resultado.addAll(FnacDriver.Search(articulo, marcasMarcadas));
+    	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, resultado);
+    	if(checkFnac.isSelected()) FnacDriver.Search(articulo, marcasMarcadas, resultado);
     }
 
     public List<String> obtenerMarcasMarcadas() {

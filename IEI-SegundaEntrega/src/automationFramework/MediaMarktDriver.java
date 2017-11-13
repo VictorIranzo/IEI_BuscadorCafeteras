@@ -23,7 +23,7 @@ public class MediaMarktDriver {
 	private static HashMap<String, WebElement> marcasWebElements;
 	private static WebDriver driver;
 	
-	public static List<Cafetera> Search(String articulo, List<String> marcas) {		
+	public static void Search(String articulo, List<String> marcas, List<Cafetera> cafeteras) {		
 		categoriasWebElements.get(articulo).click();
 		//obtenerMarcasArticulo();
 		/*
@@ -40,9 +40,16 @@ public class MediaMarktDriver {
 		*/
 		//Con este while miramos si quedan páginas por visitar
 		waitForPageLoad();
-		while(!driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).isEmpty()) {
+		
+		boolean continuar = true;
+		while(continuar)
+		{
+			waitForPageLoad();
+			continuar = !driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).isEmpty();
+			
 			List<WebElement> elementos = driver.findElements(By.className("product10"));
-			for(WebElement element : elementos) {
+			for(WebElement element : elementos) 
+			{
 				//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
 				String modelo = element.findElement(By.className("product10Description"))
 								.findElement(By.tagName("span")).getText();
@@ -52,13 +59,17 @@ public class MediaMarktDriver {
 				
 				double precioMM = Double.parseDouble(element.findElement(By.className("productPrices"))
 									.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
+			
+				cafeteras.add(new Cafetera(modelo,marca,precioMM,-1));
 			}
 			//TODO: Comprobar si funciona la navegación entre páginas
-			scrollFinalPagina();
-			driver.findElement(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).click();
-			waitForPageLoad();
-		}
-		return new ArrayList<Cafetera>();
+			if(continuar) 
+			{
+				scrollFinalPagina();
+				driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).get(1).click();
+			}
+		}	
+		return;
 	}
 
 	private static void obtenerMarcasArticulo() {

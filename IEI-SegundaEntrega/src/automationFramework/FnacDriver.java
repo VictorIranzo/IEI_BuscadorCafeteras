@@ -10,8 +10,7 @@ import app.Cafetera;
 public class FnacDriver {
 	private static String urlConnection = "https://www.fnac.es/Desayuno-y-cafe/s38477";
 	
-	public static List<Cafetera> Search(String articulo, List<String> marcas) {
+	public static void Search(String articulo, List<String> marcas, List<Cafetera> cafeteras) {
 		WebDriver driver = ChromeConnection.initChromeConnection(urlConnection);
-		return new ArrayList<Cafetera>();
 	}
 }
