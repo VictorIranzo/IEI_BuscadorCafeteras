@@ -1,6 +1,7 @@
 package automationFramework;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import app.Cafetera;
+import app.MarcaFilter;
 
 public class ElCorteInglesDriver {
 	private static String urlConnection = "http://www.elcorteingles.es/electrodomesticos/cafeteras/?level=6";
@@ -32,10 +34,11 @@ public class ElCorteInglesDriver {
 		WebDriverWait waiting = new WebDriverWait(driver,10);
 		
 		boolean continuar = true;
+		List<Cafetera> todas = new ArrayList<Cafetera>();
 		while(continuar)
 		{
 			waitForPageLoad();
-			continuar = driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).size() > 1;
+			continuar = !driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).isEmpty();
 			
 			List<WebElement> elementos = driver.findElements(By.className("product-preview"));
 			for(WebElement element : elementos) 
@@ -52,15 +55,19 @@ public class ElCorteInglesDriver {
 				double precioCC = Double.parseDouble(precio.replace(",", "."));
 	
 			
-				cafeteras.add(new Cafetera(modelo,marca,precioCC,-1));
+			
+				todas.add(new Cafetera(modelo,marca,precioCC,-1));
 			}
+
 			//TODO: Comprobar si funciona la navegación entre páginas
 			if(continuar) 
 			{
 				scrollFinalPagina();
 				driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).get(1).click();
 			}
-		}	
+		}
+		
+		cafeteras = MarcaFilter.filtrarPorMarcas(todas, marcas);
 		return;
 		
 
@@ -98,6 +105,7 @@ public class ElCorteInglesDriver {
 		
 		return categoriasWebElements.keySet();
 	}
+	
 	
 	private static void waitForPageLoad() {
 		//TODO: Refactorizar porque no funciona.
