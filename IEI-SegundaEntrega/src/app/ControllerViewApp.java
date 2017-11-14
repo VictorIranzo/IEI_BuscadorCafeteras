@@ -70,8 +70,11 @@ public class ControllerViewApp {
     	List<String> marcasMarcadas= obtenerMarcasMarcadas();
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
     	List<Cafetera> resultado = new ArrayList<Cafetera>();
+    	
     	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, resultado);
     	if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, resultado);
+    	
+    	MarcaFilter.filtrarPorMarcas(resultado, marcasMarcadas);
     }
 
     public List<String> obtenerMarcasMarcadas() {
@@ -89,8 +92,9 @@ public class ControllerViewApp {
     }
 
 	public void initializeLayout() {
-		// TODO: ¿Hace falta obtener las categorías cada vez que se carga la APP?
-		comboArticulo.setItems(FXCollections.observableArrayList(MediaMarktDriver.getCategorias()));
+		// El combo sólo hace falta llenarlo la última vez, ya que ambos métodos devuelven las mismas categorias.
+		// Al usar el modelode Media Markt.
+		MediaMarktDriver.getCategorias();
 		comboArticulo.setItems(FXCollections.observableArrayList(ElCorteInglesDriver.getCategorias()));
 	}
 }

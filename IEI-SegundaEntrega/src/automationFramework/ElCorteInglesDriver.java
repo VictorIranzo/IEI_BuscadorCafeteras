@@ -15,7 +15,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import app.Cafetera;
-import app.MarcaFilter;
 
 public class ElCorteInglesDriver {
 	private static String urlConnection = "http://www.elcorteingles.es/electrodomesticos/cafeteras/?level=6";
@@ -66,8 +65,6 @@ public class ElCorteInglesDriver {
 				driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).get(1).click();
 			}
 		}
-		
-		cafeteras = MarcaFilter.filtrarPorMarcas(todas, marcas);
 		return;
 		
 
@@ -80,7 +77,7 @@ public class ElCorteInglesDriver {
 		categoriasPermitidas.add("Cafeteras de goteo");
 		categoriasPermitidas.add("Cafeteras superautomáticas");
 		categoriasPermitidas.add("Cafeteras tradicionales");
-		categoriasPermitidas.add("Cafeteras monodosis");
+		categoriasPermitidas.add("Café y accesorios");
 		categoriasPermitidas.add("Hervidores y teteras");
 		
 		driver = ChromeConnection.initChromeConnection(urlConnection);
@@ -97,6 +94,7 @@ public class ElCorteInglesDriver {
 			if(textoCategoria.equals("Superautomáticas")) textoCategoria = "Cafeteras superautomáticas";
 			if(textoCategoria.equals("Cafeteras de cápsulas")) textoCategoria = "Cafeteras monodosis";
 			if(textoCategoria.equals("Hervidoras")) textoCategoria = "Hervidores y teteras";
+			if(textoCategoria.equals("Accesorios")) textoCategoria = "Café y accesorios";
 			
 			if(categoriasPermitidas.contains(textoCategoria)&& !categoriasWebElements.containsKey(textoCategoria)) { 
 				categoriasWebElements.put(textoCategoria, element);

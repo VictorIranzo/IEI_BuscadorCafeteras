@@ -48,6 +48,7 @@ public class MediaMarktDriver {
 		while(continuar)
 		{
 			waitForPageLoad();
+			waiting.until(ExpectedConditions.invisibilityOfElementLocated(By.className("popup_content")));
 			continuar = driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).size() > 1;
 			
 			List<WebElement> elementos = driver.findElements(By.className("product10"));
@@ -66,7 +67,7 @@ public class MediaMarktDriver {
 			
 				cafeteras.add(new Cafetera(modelo,marca,precioMM,-1));
 			}
-			//TODO: Comprobar si funciona la navegación entre páginas
+
 			if(continuar) 
 			{
 				scrollFinalPagina();
