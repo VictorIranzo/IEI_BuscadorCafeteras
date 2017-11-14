@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ControllerViewApp">
    <children>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="50.0">
@@ -24,7 +23,7 @@
                      </children>
                   </HBox>
                   <CheckBox fx:id="checkMediaMarkt" mnemonicParsing="false" text="MediaMarkt" />
-                  <CheckBox fx:id="checkFnac" mnemonicParsing="false" text="Fnac" />
+                  <CheckBox fx:id="checkElCorteIngles" mnemonicParsing="false" text="El Corte Inglés" />
                   <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#click_Buscar" text="Buscar">
                      <VBox.margin>
                         <Insets top="80.0" />
@@ -64,7 +63,7 @@
           <TableColumn fx:id="colModelo" prefWidth="300.0" text="Modelo" />
           <TableColumn fx:id="colMarca" prefWidth="75.0" text="Marca" />
             <TableColumn fx:id="colMediaMarkt" prefWidth="75.0" text="MediaMarkt" />
-            <TableColumn fx:id="colFnac" prefWidth="75.0" text="Fnac" />
+            <TableColumn fx:id="colElCorteIngles" prefWidth="75.0" text="El Corte Ingles" />
         </columns>
       </TableView>
    </children>

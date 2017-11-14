@@ -3,7 +3,7 @@ package app;
 import java.util.ArrayList;
 import java.util.List;
 
-import automationFramework.FnacDriver;
+import automationFramework.ElCorteInglesDriver;
 import automationFramework.MediaMarktDriver;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +24,7 @@ public class ControllerViewApp {
     private CheckBox checkMediaMarkt;
 
     @FXML
-    private CheckBox checkFnac;
+    private CheckBox checkElCorteIngles;
 
     @FXML
     private Button btnBuscar;
@@ -63,7 +63,7 @@ public class ControllerViewApp {
     private TableColumn<Cafetera,Double> colMediaMarkt;
 
     @FXML
-    private TableColumn<Cafetera,Double> colFnac;
+    private TableColumn<Cafetera,Double> colElCorteIngles;
     
     @FXML
     public void click_Buscar(Event event) {
@@ -71,7 +71,7 @@ public class ControllerViewApp {
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
     	List<Cafetera> resultado = new ArrayList<Cafetera>();
     	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, resultado);
-    	if(checkFnac.isSelected()) FnacDriver.Search(articulo, marcasMarcadas, resultado);
+    	if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, resultado);
     }
 
     public List<String> obtenerMarcasMarcadas() {
@@ -90,6 +90,7 @@ public class ControllerViewApp {
 
 	public void initializeLayout() {
 		// TODO: ¿Hace falta obtener las categorías cada vez que se carga la APP?
-		comboArticulo.setItems(FXCollections.observableArrayList(MediaMarktDriver.getCategorias()));		
+		comboArticulo.setItems(FXCollections.observableArrayList(MediaMarktDriver.getCategorias()));
+		comboArticulo.setItems(FXCollections.observableArrayList(ElCorteInglesDriver.getCategorias()));
 	}
 }
