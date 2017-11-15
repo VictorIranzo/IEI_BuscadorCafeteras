@@ -6,7 +6,8 @@ import java.util.List;
 public class MarcaFilter {
 	
 	
-	
+	// Ya no se utiliza.
+	// TODO: Delete.
 	public static List<Cafetera> filtrarPorMarcas(List<Cafetera> todas, List<String> marcasMarcadas) {
 		if(marcasMarcadas.size() == 0) return todas;
 		

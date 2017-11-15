@@ -13,8 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -92,7 +90,7 @@ public class ControllerViewApp {
     	catch(Exception ex) {
     		showExceptionAlert(ex);
     	}
-    	observableCafeteras = FXCollections.observableArrayList(MarcaFilter.filtrarPorMarcas(resultado, marcasMarcadas));
+    	observableCafeteras = FXCollections.observableArrayList(resultado);
     	tablaResultados.setItems(observableCafeteras);
     }
 
@@ -100,7 +98,6 @@ public class ControllerViewApp {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Exception Dialog");
 		alert.setHeaderText("Excepción no controlada.");
-		alert.setContentText(ex.getMessage());
 		
 		// Create expandable Exception.
 		StringWriter sw = new StringWriter();

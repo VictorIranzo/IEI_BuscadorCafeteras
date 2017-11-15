@@ -71,8 +71,10 @@ public class MediaMarktDriver {
 				double precioMM = Double.parseDouble(divPrecio
 						.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
 			
-				Cafetera cafetera = new Cafetera(modelo,marca, precioMM, -1);
-				cafeteras.add(cafetera);
+				if(marcas.isEmpty() || marcas.contains(marca)) {
+					Cafetera cafetera = new Cafetera(modelo,marca.toUpperCase(), precioMM, -1);
+					cafeteras.add(cafetera);
+				}
 			}
 
 			if(continuar) 

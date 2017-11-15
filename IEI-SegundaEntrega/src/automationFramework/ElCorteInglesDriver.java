@@ -38,6 +38,8 @@ public class ElCorteInglesDriver {
 		while(continuar)
 		{
 			waitForPageLoad();
+			
+			//TODO: Falla cuando sólo hay 1 página.
 			List<WebElement> paginasAccesibles = driver.findElement(By.className("pagination")).findElements(By.tagName("a"));
 			WebElement ultimoBoton = paginasAccesibles.get(paginasAccesibles.size()-1);
 			
@@ -52,29 +54,32 @@ public class ElCorteInglesDriver {
 				 
 				WebElement marcaElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("brand"))));
 				String marca = marcaElement.getText();
+				if(marca.equals("DE'LONGHI")) marca = "DELONGUI";
 				
 				WebElement divPrecio = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("current"))));
 				String precio = divPrecio.getText().substring(0, divPrecio.getText().length()-1);
 				double precioCC = Double.parseDouble(precio.replace(",", "."));
 	
-				Cafetera cafetera = new Cafetera(modelo,marca, -1, precioCC);
-				
-				// Esto funciona porque sobreescribimos el método equals() de cafetera y las consideramos iguales 
-				// cuando tienen mismo nombre de modelo
-				boolean inserted = false;
-				for(Cafetera caf : cafeteras) {
-					if(caf.equals(cafetera)) 
-					{
-						//Si encontramos el mismo modelo, le cambiamos el precio de El Corte Inglés que antes era -1
-						caf.setPrecioCorteIngles(precioCC);
-						inserted = true;	
-						break;
+				if(marcas.isEmpty() || marcas.contains(marca)) {
+					Cafetera cafetera = new Cafetera(modelo,marca, -1, precioCC);
+					
+					// Esto funciona porque sobreescribimos el método equals() de cafetera y las consideramos iguales 
+					// cuando tienen mismo nombre de modelo
+					boolean inserted = false;
+					for(Cafetera caf : cafeteras) {
+						if(caf.equals(cafetera)) 
+						{
+							//Si encontramos el mismo modelo, le cambiamos el precio de El Corte Inglés que antes era -1
+							caf.setPrecioCorteIngles(precioCC);
+							inserted = true;	
+							break;
+						}
 					}
-				}
-				if(!inserted) 
-				{
-					//Si no la hemos encontrado, insertamos con el precio de MediaMarkt a -1
-					cafeteras.add(cafetera);
+					if(!inserted) 
+					{
+						//Si no la hemos encontrado, insertamos con el precio de MediaMarkt a -1
+						cafeteras.add(cafetera);
+					}
 				}
 			}
 			
