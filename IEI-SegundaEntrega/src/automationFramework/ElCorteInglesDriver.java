@@ -33,7 +33,6 @@ public class ElCorteInglesDriver {
 		WebDriverWait waiting = new WebDriverWait(driver,10);
 		
 		boolean continuar = true;
-		List<Cafetera> todas = new ArrayList<Cafetera>();
 		while(continuar)
 		{
 			waitForPageLoad();
@@ -53,22 +52,36 @@ public class ElCorteInglesDriver {
 				String precio = divPrecio.getText().substring(0, divPrecio.getText().length()-1);
 				double precioCC = Double.parseDouble(precio.replace(",", "."));
 	
-			
-			
-				todas.add(new Cafetera(modelo,marca,precioCC,-1));
+				Cafetera cafetera = new Cafetera(modelo,marca,-1, precioCC);
+				
+				// Esto funciona porque sobreescribimos el método equals() de cafetera y las consideramos iguales 
+				// cuando tienen mismo nombre de modelo
+				boolean inserted = false;
+				for(Cafetera caf : cafeteras) {
+					if(caf.equals(cafetera)) 
+					{
+						//Si encontramos el mismo modelo, le cambiamos el precio de El Corte Inglés que antes era -1
+						caf.setPrecioCorteIngles(precioCC);
+						inserted = true;	
+						break;
+					}
+				}
+				if(!inserted) 
+				{
+					//Si no la hemos encontrado, insertamos con el precio de MediaMarkt a -1
+					cafeteras.add(cafetera);
+				}
 			}
-
-			//TODO: Comprobar si funciona la navegación entre páginas
+			
 			if(continuar) 
 			{
 				scrollFinalPagina();
 				driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).get(1).click();
 			}
 		}
-		return;
 		
-
-		
+		driver.get(urlConnection);
+		return;			
 	}
 	
 	public static Set<String> getCategorias(){

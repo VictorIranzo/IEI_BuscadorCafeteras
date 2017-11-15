@@ -5,6 +5,8 @@ import java.util.List;
 
 import automationFramework.ElCorteInglesDriver;
 import automationFramework.MediaMarktDriver;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -65,6 +67,8 @@ public class ControllerViewApp {
     @FXML
     private TableColumn<Cafetera,Double> colElCorteIngles;
     
+    ObservableList<Cafetera> observableCafeteras;
+    
     @FXML
     public void click_Buscar(Event event) {
     	List<String> marcasMarcadas= obtenerMarcasMarcadas();
@@ -74,7 +78,8 @@ public class ControllerViewApp {
     	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, resultado);
     	if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, resultado);
     	
-    	MarcaFilter.filtrarPorMarcas(resultado, marcasMarcadas);
+    	observableCafeteras = FXCollections.observableArrayList(MarcaFilter.filtrarPorMarcas(resultado, marcasMarcadas));
+    	tablaResultados.setItems(observableCafeteras);
     }
 
     public List<String> obtenerMarcasMarcadas() {
@@ -96,5 +101,10 @@ public class ControllerViewApp {
 		// Al usar el modelode Media Markt.
 		MediaMarktDriver.getCategorias();
 		comboArticulo.setItems(FXCollections.observableArrayList(ElCorteInglesDriver.getCategorias()));
+		
+		colModelo.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getModelo()));
+		colMarca.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getMarca()));
+		colMediaMarkt.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrecioMediaMarkt()).asObject());
+		colElCorteIngles.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrecioCorteIngles()).asObject());
 	}
 }

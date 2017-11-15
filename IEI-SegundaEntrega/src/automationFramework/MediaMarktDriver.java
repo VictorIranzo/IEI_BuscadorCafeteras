@@ -24,6 +24,7 @@ public class MediaMarktDriver {
 	private static WebDriver driver;
 	
 	public static void Search(String articulo, List<String> marcas, List<Cafetera> cafeteras) {		
+		//TODO: Cuando buscamos por segunda vez, el webelement no es el mismo y peta.
 		categoriasWebElements.get(articulo).click();
 		//obtenerMarcasArticulo();
 		/*
@@ -74,6 +75,8 @@ public class MediaMarktDriver {
 				driver.findElements(By.xpath("//a[contains(@class, 'button bPager gray left arrow')]")).get(1).click();
 			}
 		}	
+		
+		driver.get(urlConnection);
 		return;
 	}
 
