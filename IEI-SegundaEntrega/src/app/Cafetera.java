@@ -13,6 +13,15 @@ public class Cafetera {
 		this.precioMediaMarkt = precioMediaMarkt;
 		this.precioCorteIngles = precioCorteIngles;
 	}
+	
+	public Cafetera(String modelo, String marca) {
+		super();
+		this.modelo = modelo;
+		this.marca = marca;
+	}
+
+
+
 	public String getModelo() {
 		return modelo;
 	}

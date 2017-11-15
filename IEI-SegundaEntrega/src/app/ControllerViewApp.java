@@ -68,15 +68,16 @@ public class ControllerViewApp {
     private TableColumn<Cafetera,Double> colElCorteIngles;
     
     ObservableList<Cafetera> observableCafeteras;
-    
+	List<String> categoriasPermitidas;
+	
     @FXML
     public void click_Buscar(Event event) {
     	List<String> marcasMarcadas= obtenerMarcasMarcadas();
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
     	List<Cafetera> resultado = new ArrayList<Cafetera>();
     	
-    	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, resultado);
-    	if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, resultado);
+    	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
+    	if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
     	
     	observableCafeteras = FXCollections.observableArrayList(MarcaFilter.filtrarPorMarcas(resultado, marcasMarcadas));
     	tablaResultados.setItems(observableCafeteras);
@@ -97,10 +98,17 @@ public class ControllerViewApp {
     }
 
 	public void initializeLayout() {
-		// El combo sólo hace falta llenarlo la última vez, ya que ambos métodos devuelven las mismas categorias.
-		// Al usar el modelode Media Markt.
-		MediaMarktDriver.getCategorias();
-		comboArticulo.setItems(FXCollections.observableArrayList(ElCorteInglesDriver.getCategorias()));
+		categoriasPermitidas = new ArrayList<String>();
+		
+		categoriasPermitidas.add("Cafeteras monodosis");
+		categoriasPermitidas.add("Cafeteras express");
+		categoriasPermitidas.add("Cafeteras de goteo");
+		categoriasPermitidas.add("Cafeteras superautomáticas");
+		categoriasPermitidas.add("Cafeteras tradicionales");
+		categoriasPermitidas.add("Café y accesorios");
+		categoriasPermitidas.add("Hervidores y teteras");
+		
+		comboArticulo.setItems(FXCollections.observableArrayList(categoriasPermitidas));
 		
 		colModelo.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getModelo()));
 		colMarca.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getMarca()));

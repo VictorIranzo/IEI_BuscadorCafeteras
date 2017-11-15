@@ -23,8 +23,11 @@ public class MediaMarktDriver {
 	private static HashMap<String, WebElement> marcasWebElements;
 	private static WebDriver driver;
 	
-	public static void Search(String articulo, List<String> marcas, List<Cafetera> cafeteras) {		
-		//TODO: Cuando buscamos por segunda vez, el webelement no es el mismo y peta.
+	public static void Search(String articulo, List<String> marcas, List<String> categoriasPermitidas, List<Cafetera> cafeteras) {		
+		
+		driver = ChromeConnection.initChromeConnection(urlConnection);
+		
+		getCategorias();
 		categoriasWebElements.get(articulo).click();
 		//obtenerMarcasArticulo();
 		/*
@@ -66,7 +69,9 @@ public class MediaMarktDriver {
 				double precioMM = Double.parseDouble(divPrecio
 						.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
 			
-				cafeteras.add(new Cafetera(modelo,marca,precioMM,-1));
+				Cafetera cafetera = new Cafetera(modelo,marca);
+				cafetera.setPrecioMediaMarkt(precioMM);
+				cafeteras.add(cafetera);
 			}
 
 			if(continuar) 
@@ -76,7 +81,8 @@ public class MediaMarktDriver {
 			}
 		}	
 		
-		driver.get(urlConnection);
+		driver.close();
+		
 		return;
 	}
 
@@ -95,8 +101,8 @@ public class MediaMarktDriver {
 		}
 	}
 
-	public static Set<String> getCategorias() {
-		driver = ChromeConnection.initChromeConnection(urlConnection);		
+	public static void getCategorias() {
+		
 		List<WebElement> elementosCategoryClass = (List<WebElement>) driver.findElements(By.className("categoryTree"));	
 		categoriasWebElements = new HashMap<String, WebElement>();
 		
@@ -108,12 +114,9 @@ public class MediaMarktDriver {
 				categoriasWebElements.put(textoCategoria, element);
 			}
 		}				
-		
-		return categoriasWebElements.keySet();
 	}
 	
 	private static void waitForPageLoad() {
-		//TODO: Refactorizar porque no funciona.
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	}
 	

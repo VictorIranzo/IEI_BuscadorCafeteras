@@ -21,19 +21,18 @@ public class ElCorteInglesDriver {
 	private static String urlConnection = "http://www.elcorteingles.es/electrodomesticos/cafeteras/?level=6";
 	private static HashMap<String, WebElement> categoriasWebElements;
 	private static HashMap<String, WebElement> marcasWebElements;
-	private static WebDriver driver;
-	private static List<String> categoriasPermitidas = new ArrayList<String>();
-
+	private static WebDriver driver;	
 	
-	
-	public static void Search(String articulo, List<String> marcas, List<Cafetera> cafeteras) {
+	public static void Search(String articulo, List<String> marcas, List<String> categoriasPermitidas, List<Cafetera> cafeteras) {
+		
+		driver = ChromeConnection.initChromeConnection(urlConnection);
+		
+		getCategorias(categoriasPermitidas);
 		categoriasWebElements.get(articulo).click();
 		
 		waitForPageLoad();
 		
 		WebDriverWait waiting = new WebDriverWait(driver,10);
-		
-
 		
 		boolean continuar = true;
 		while(continuar)
@@ -58,7 +57,8 @@ public class ElCorteInglesDriver {
 				String precio = divPrecio.getText().substring(0, divPrecio.getText().length()-1);
 				double precioCC = Double.parseDouble(precio.replace(",", "."));
 	
-				Cafetera cafetera = new Cafetera(modelo,marca,-1, precioCC);
+				Cafetera cafetera = new Cafetera(modelo,marca);
+				cafetera.setPrecioCorteIngles(precioCC);
 				
 				// Esto funciona porque sobreescribimos el método equals() de cafetera y las consideramos iguales 
 				// cuando tienen mismo nombre de modelo
@@ -86,20 +86,12 @@ public class ElCorteInglesDriver {
 			}
 		}
 		
-		driver.get(urlConnection);
+		driver.close();
+		
 		return;			
 	}
 	
-	public static Set<String> getCategorias(){
-		categoriasPermitidas.add("Cafeteras monodosis");
-		categoriasPermitidas.add("Cafeteras express");
-		categoriasPermitidas.add("Cafeteras de goteo");
-		categoriasPermitidas.add("Cafeteras superautomáticas");
-		categoriasPermitidas.add("Cafeteras tradicionales");
-		categoriasPermitidas.add("Café y accesorios");
-		categoriasPermitidas.add("Hervidores y teteras");
-		
-		driver = ChromeConnection.initChromeConnection(urlConnection);
+	public static void getCategorias(List<String> categoriasPermitidas){		
 		List<WebElement> elementosCategoryClass = (List<WebElement>) driver.findElements(By.className("facet-popup"));
 		
 		categoriasWebElements = new HashMap<String, WebElement>();
@@ -119,8 +111,6 @@ public class ElCorteInglesDriver {
 				categoriasWebElements.put(textoCategoria, element);
 			}
 		}				
-		
-		return categoriasWebElements.keySet();
 	}
 	
 	
