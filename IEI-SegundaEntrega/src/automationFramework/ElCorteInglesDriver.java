@@ -57,8 +57,7 @@ public class ElCorteInglesDriver {
 				String precio = divPrecio.getText().substring(0, divPrecio.getText().length()-1);
 				double precioCC = Double.parseDouble(precio.replace(",", "."));
 	
-				Cafetera cafetera = new Cafetera(modelo,marca);
-				cafetera.setPrecioCorteIngles(precioCC);
+				Cafetera cafetera = new Cafetera(modelo,marca, -1, precioCC);
 				
 				// Esto funciona porque sobreescribimos el método equals() de cafetera y las consideramos iguales 
 				// cuando tienen mismo nombre de modelo

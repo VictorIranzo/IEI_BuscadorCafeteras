@@ -1,5 +1,7 @@
 package app;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +13,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 
 public class ControllerViewApp {
 
@@ -76,12 +85,42 @@ public class ControllerViewApp {
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
     	List<Cafetera> resultado = new ArrayList<Cafetera>();
     	
-    	if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
-    	if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
-    	
+    	try {
+    		if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
+    		if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
+    	}
+    	catch(Exception ex) {
+    		showExceptionAlert(ex);
+    	}
     	observableCafeteras = FXCollections.observableArrayList(MarcaFilter.filtrarPorMarcas(resultado, marcasMarcadas));
     	tablaResultados.setItems(observableCafeteras);
     }
+
+	private void showExceptionAlert(Exception ex) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Exception Dialog");
+		alert.setHeaderText("Excepción no controlada.");
+		alert.setContentText(ex.getMessage());
+		
+		// Create expandable Exception.
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String exceptionText = sw.toString();
+
+		Label label = new Label("Stacktrace de la excepción:");
+
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+
+		GridPane expContent = new GridPane();
+		expContent.setMaxWidth(Double.MAX_VALUE);
+		expContent.add(label, 0, 0);
+		expContent.add(textArea, 0, 1);
+		
+		alert.getDialogPane().setExpandableContent(expContent);
+		alert.showAndWait();
+	}
 
     public List<String> obtenerMarcasMarcadas() {
     	List<String> marcasMarcadas = new ArrayList<String>();
