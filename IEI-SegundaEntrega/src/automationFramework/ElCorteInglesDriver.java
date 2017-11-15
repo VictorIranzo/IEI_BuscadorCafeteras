@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -32,11 +33,16 @@ public class ElCorteInglesDriver {
 		
 		WebDriverWait waiting = new WebDriverWait(driver,10);
 		
+
+		
 		boolean continuar = true;
 		while(continuar)
 		{
 			waitForPageLoad();
-			continuar = !driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).isEmpty();
+			List<WebElement> paginasAccesibles = driver.findElement(By.className("pagination")).findElements(By.tagName("a"));
+			WebElement ultimoBoton = paginasAccesibles.get(paginasAccesibles.size()-1);
+			
+			continuar = ultimoBoton.isEnabled() && ultimoBoton.getText().equals("Siguiente");
 			
 			List<WebElement> elementos = driver.findElements(By.className("product-preview"));
 			for(WebElement element : elementos) 
@@ -75,8 +81,8 @@ public class ElCorteInglesDriver {
 			
 			if(continuar) 
 			{
-				scrollFinalPagina();
-				driver.findElements(By.xpath("//a[contains(@class, 'pagination c12')]")).get(1).click();
+				scrollToAnElement(ultimoBoton);
+				ultimoBoton.click();
 			}
 		}
 		
@@ -123,7 +129,9 @@ public class ElCorteInglesDriver {
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	}
 	
-	private static void scrollFinalPagina() {
-		((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+	private static void scrollToAnElement(WebElement webElement) {
+		Actions actions = new Actions(driver);
+		actions.moveToElement(webElement);
+		actions.perform();
 	}
 }
