@@ -122,13 +122,13 @@ public class ControllerViewApp {
     public List<String> obtenerMarcasMarcadas() {
     	List<String> marcasMarcadas = new ArrayList<String>();
     	
-    	if(chTaurus.isSelected()) marcasMarcadas.add("Taurus");
-    	if(chDelongui.isSelected())marcasMarcadas.add("Delongui");
-    	if(chBosch.isSelected()) marcasMarcadas.add("Bosch");
-    	if(chPhilips.isSelected()) marcasMarcadas.add("Philips");
-    	if(chJata.isSelected()) marcasMarcadas.add("Jata");;
-    	if(chKrups.isSelected()) marcasMarcadas.add("Krups");
-    	if(chJura.isSelected())marcasMarcadas.add("Jura");
+    	if(chTaurus.isSelected()) marcasMarcadas.add("TAURUS");
+    	if(chDelongui.isSelected())marcasMarcadas.add("DELONGUI");
+    	if(chBosch.isSelected()) marcasMarcadas.add("BOSCH");
+    	if(chPhilips.isSelected()) marcasMarcadas.add("PHILIPS");
+    	if(chJata.isSelected()) marcasMarcadas.add("JATA");;
+    	if(chKrups.isSelected()) marcasMarcadas.add("KRUPS");
+    	if(chJura.isSelected())marcasMarcadas.add("JURA");
     	
     	return marcasMarcadas;
     }

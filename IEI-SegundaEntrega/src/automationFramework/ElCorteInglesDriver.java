@@ -39,11 +39,11 @@ public class ElCorteInglesDriver {
 		{
 			waitForPageLoad();
 			
-			//TODO: Falla cuando sólo hay 1 página.
-			List<WebElement> paginasAccesibles = driver.findElement(By.className("pagination")).findElements(By.tagName("a"));
-			WebElement ultimoBoton = paginasAccesibles.get(paginasAccesibles.size()-1);
+			int numeroArticulos = Integer.parseInt(driver.findElement(By.id("product-list-total")).getText().split(" ")[0]);		
 			
-			continuar = ultimoBoton.isEnabled() && ultimoBoton.getText().equals("Siguiente");
+			if(numeroArticulos <= 24) {
+				continuar = false;
+			}
 			
 			List<WebElement> elementos = driver.findElements(By.className("product-preview"));
 			for(WebElement element : elementos) 
@@ -85,6 +85,9 @@ public class ElCorteInglesDriver {
 			
 			if(continuar) 
 			{
+				List<WebElement> paginasAccesibles = driver.findElement(By.className("pagination")).findElements(By.tagName("a"));
+				WebElement ultimoBoton = paginasAccesibles.get(paginasAccesibles.size()-1);				
+				continuar = ultimoBoton.isEnabled() && ultimoBoton.getText().equals("Siguiente");
 				scrollToAnElement(ultimoBoton);
 				ultimoBoton.click();
 			}

@@ -67,12 +67,14 @@ public class MediaMarktDriver {
 				
 				if(marca.equals("De Longhi")) marca = "Delongui";
 				
+				marca = marca.toUpperCase();
+				
 				WebElement divPrecio = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("productPrices"))));
 				double precioMM = Double.parseDouble(divPrecio
 						.findElement(By.tagName("meta")).getAttribute("content").replace(",", "."));
 			
 				if(marcas.isEmpty() || marcas.contains(marca)) {
-					Cafetera cafetera = new Cafetera(modelo,marca.toUpperCase(), precioMM, -1);
+					Cafetera cafetera = new Cafetera(modelo,marca, precioMM, -1);
 					cafeteras.add(cafetera);
 				}
 			}
