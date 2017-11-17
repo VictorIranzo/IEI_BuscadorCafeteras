@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -56,10 +57,15 @@ public class ElCorteInglesDriver {
 				String marca = marcaElement.getText();
 				if(marca.equals("DE'LONGHI")) marca = "DELONGUI";
 				
-				WebElement divPrecio = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("current"))));
+				double precioCC = 0;
+				try {
+				WebElement divPrecio = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("current"))));				
 				String precio = divPrecio.getText().substring(0, divPrecio.getText().length()-1);
-				double precioCC = Double.parseDouble(precio.replace(",", "."));
-	
+				precioCC = Double.parseDouble(precio.replace(",", "."));
+				}catch(TimeoutException e) {
+					//Esta excepción se captura para productos que aparecen y no tienen precio.
+				}
+				
 				if(marcas.isEmpty() || marcas.contains(marca)) {
 					Cafetera cafetera = new Cafetera(modelo,marca, -1, precioCC);
 					
