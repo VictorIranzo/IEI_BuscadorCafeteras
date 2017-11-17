@@ -51,8 +51,8 @@ public class ElCorteInglesDriver {
 			{
 				//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
 				WebElement modeloElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("info-name"))));
-				String modelo = modeloElement.findElement(By.tagName("a")).getText();
-				 
+				String modelo = modeloElement.findElement(By.tagName("a")).getAttribute("title");
+				
 				WebElement marcaElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("brand"))));
 				String marca = marcaElement.getText();
 				if(marca.equals("DE'LONGHI")) marca = "DELONGUI";
@@ -72,11 +72,11 @@ public class ElCorteInglesDriver {
 					// Esto funciona porque sobreescribimos el método equals() de cafetera y las consideramos iguales 
 					// cuando tienen mismo nombre de modelo
 					boolean inserted = false;
-					for(Cafetera caf : cafeteras) {
-						if(caf.equals(cafetera)) 
+					for(Cafetera cafMM : cafeteras) {
+						if(compararCafeteras(cafMM,cafetera)) 
 						{
 							//Si encontramos el mismo modelo, le cambiamos el precio de El Corte Inglés que antes era -1
-							caf.setPrecioCorteIngles(precioCC);
+							cafMM.setPrecioCorteIngles(precioCC);
 							inserted = true;	
 							break;
 						}
@@ -136,5 +136,50 @@ public class ElCorteInglesDriver {
 		Actions actions = new Actions(driver);
 		actions.moveToElement(webElement);
 		actions.perform();
+	}
+	
+	private static boolean compararCafeteras(Cafetera cafeteraMM, Cafetera cafeteraCC) {
+		
+		// Si son de marcas distintas, devolvemos false.
+		if(!cafeteraMM.getMarca().equals(cafeteraCC.getMarca())) return false;
+		
+		String nombreModeloMM = cafeteraMM.getModelo();
+		String nombreModeloCC = cafeteraCC.getModelo();
+		 
+		 char[] caracteresMM = nombreModeloMM.toCharArray();
+		 String numeroMM = "";
+		 
+	     for(int i= 0; i < caracteresMM.length; i++){
+	    	char c = caracteresMM[i];
+	        if(Character.isDigit(c)) {
+	            for(int j=i; j< caracteresMM.length; j++) {
+	            	char c2 = caracteresMM[j];
+	            	if(!Character.isDigit(c2)) {
+	            		numeroMM = nombreModeloMM.substring(i,j);
+	            		break;
+	            	}
+	            }
+	            break;
+	        }       
+	     }
+	     
+		 char[] caracteresCC = nombreModeloCC.toCharArray();
+		 String numeroCC = "";
+		 
+	     for(int i= 0; i < caracteresCC.length; i++){
+	    	char c = caracteresCC[i];
+	        if(Character.isDigit(c)) {
+	            for(int j=i; j< caracteresCC.length; j++) {
+	            	char c2 = caracteresCC[j];
+	            	if(!Character.isDigit(c2)) {
+	            		numeroCC = nombreModeloCC.substring(i,j);
+	            		break;
+	            	}
+	            }
+	            break;
+	        }       
+	     }
+	     
+	     return numeroCC.equals(numeroMM);
 	}
 }
