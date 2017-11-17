@@ -141,7 +141,7 @@ public class ElCorteInglesDriver {
 	private static boolean compararCafeteras(Cafetera cafeteraMM, Cafetera cafeteraCC) {
 		
 		// Si son de marcas distintas, devolvemos false.
-		if(!cafeteraMM.getMarca().equals(cafeteraCC.getMarca())) return false;
+		if(!cafeteraMM.getMarca().equals(cafeteraCC.getMarca()) || cafeteraMM.getPrecioMediaMarkt() == -1.0) return false;
 		
 		String nombreModeloMM = cafeteraMM.getModelo();
 		String nombreModeloCC = cafeteraCC.getModelo();
