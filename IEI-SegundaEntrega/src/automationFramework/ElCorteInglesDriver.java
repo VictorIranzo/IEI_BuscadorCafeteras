@@ -139,48 +139,13 @@ public class ElCorteInglesDriver {
 		
 		// Si son de marcas distintas o las cafeteras que comparamos son ambas de El Corte Inglés, devolvemos false.
 		if(!cafeteraMM.getMarca().equals(cafeteraCC.getMarca()) || cafeteraMM.getPrecioMediaMarkt() == -1.0) return false;
-		 
-		 String numeroMM = obtenerPrimerNumero(cafeteraMM.getModelo());
-	     String numeroCC = obtenerPrimerNumero(cafeteraCC.getModelo());
 	     
-	     if(numeroCC.equals(numeroMM)) {
+		//Son iguales si tienen igual numero de modelo, atributo que se calcula con el constructor de Cafetera.
+	     if(cafeteraMM.getNumeroModelo().equals(cafeteraCC.getNumeroModelo())) {
 	    	 return true;
 	     }
+	     
 	     return false;
 	}
 
-	private static String obtenerPrimerNumero(String nombreModelo) {
-		char[] caracteresModelo = nombreModelo.toCharArray();
-		 String numeroModelo = "";
-		 
-	     for(int i= 0; i < caracteresModelo.length; i++){
-	    	char c = caracteresModelo[i];
-	    	
-	    	//Buscamos el primer carácter numérico
-	        if(Character.isDigit(c)) {
-	        	
-	        	/* Esto era una buena idea para extraer toda la palabra que contenía a ese carácter, 
-	        	 * pero nos hemos dado cuenta que en MediaMarkt ponen el modelo como CG 343 y en
-	        	 * El Corte inglés como CG343, por lo que no haría matching al comparar 343 con CG343.
-	        	//Retrocedemos hasta el espacio en blanco anterior
-	        	int k;
-	        	for(k=i; k>=0; k--) {
-	        		char c2 = caracteresModelo[k];
-	        		if(Character.isWhitespace(c2)) break;
-	        	}
-	        	*/
-	        	
-	        	//Cogemos hasta el siguiente espacio en blanco
-	            for(int j=i; j< caracteresModelo.length; j++) {
-	            	char c2 = caracteresModelo[j];
-	            	if(Character.isWhitespace(c2)) {
-	            		numeroModelo = nombreModelo.substring(i,j);
-	            		break;
-	            	}
-	            }
-	            break;
-	        }       
-	     }
-		return numeroModelo;
-	}
 }
