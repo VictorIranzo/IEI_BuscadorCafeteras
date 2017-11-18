@@ -10,6 +10,7 @@ import automationFramework.MediaMarktDriver;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -29,6 +30,9 @@ public class ControllerViewApp {
     @FXML
     private ComboBox<String> comboArticulo;
 
+    @FXML
+    private Label lblCargando;
+    
     @FXML
     private CheckBox checkMediaMarkt;
 
@@ -81,19 +85,32 @@ public class ControllerViewApp {
     public void click_Buscar(Event event) {
     	List<String> marcasMarcadas= obtenerMarcasMarcadas();
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
-    	List<Cafetera> resultado = new ArrayList<Cafetera>();
+		
+    	lblCargando.setVisible(true);
+    	btnBuscar.setDisable(true);
     	
-    	//Control de excepciones no controladas.
-    	try {
-    		if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
-    		if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
-    	}
-    	catch(Exception ex) {
-    		showExceptionAlert(ex);
-    	}
+    	observableCafeteras.clear();
     	
-    	observableCafeteras = FXCollections.observableArrayList(resultado);
-    	tablaResultados.setItems(observableCafeteras);
+    	Thread thread = new Thread() {
+    		public void run() {
+		    	//Control de excepciones no controladas.
+
+		    	try {
+		    		if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, observableCafeteras);
+		    		if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, observableCafeteras);
+		    	}
+		    	catch(Exception ex) {
+		    		showExceptionAlert(ex);
+		    	}
+		    	
+
+		    	tablaResultados.setItems(observableCafeteras);
+		    	
+		    	lblCargando.setVisible(false);
+		    	btnBuscar.setDisable(false);
+    		}
+    	};
+    	thread.start();
     }
 
     //Muestra el stacktrace de una excepción no controlada.
@@ -151,9 +168,23 @@ public class ControllerViewApp {
 		
 		comboArticulo.setItems(FXCollections.observableArrayList(categoriasPermitidas));
 		
+		lblCargando.setVisible(false);
+		
 		colModelo.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getModelo()));
 		colMarca.setCellValueFactory(c-> new SimpleStringProperty(c.getValue().getMarca()));
 		colMediaMarkt.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrecioMediaMarkt()).asObject());
 		colElCorteIngles.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrecioCorteIngles()).asObject());
+	
+    	List<Cafetera> resultado = new ArrayList<Cafetera>();
+    	observableCafeteras = FXCollections.observableArrayList(resultado);
+		observableCafeteras.addListener(new ListChangeListener<Cafetera>() {
+
+			@Override
+			public void onChanged(Change<? extends Cafetera> c) {
+		    	tablaResultados.setItems(observableCafeteras);
+				tablaResultados.refresh();
+			}
+			
+		});
 	}
 }
