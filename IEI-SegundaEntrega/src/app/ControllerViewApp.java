@@ -83,6 +83,7 @@ public class ControllerViewApp {
     	String articulo = comboArticulo.getSelectionModel().getSelectedItem();
     	List<Cafetera> resultado = new ArrayList<Cafetera>();
     	
+    	//Control de excepciones no controladas.
     	try {
     		if(checkMediaMarkt.isSelected()) MediaMarktDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
     		if(checkElCorteIngles.isSelected()) ElCorteInglesDriver.Search(articulo, marcasMarcadas, categoriasPermitidas, resultado);
@@ -90,10 +91,12 @@ public class ControllerViewApp {
     	catch(Exception ex) {
     		showExceptionAlert(ex);
     	}
+    	
     	observableCafeteras = FXCollections.observableArrayList(resultado);
     	tablaResultados.setItems(observableCafeteras);
     }
 
+    //Muestra el stacktrace de una excepción no controlada.
 	private void showExceptionAlert(Exception ex) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Exception Dialog");
@@ -119,6 +122,7 @@ public class ControllerViewApp {
 		alert.showAndWait();
 	}
 
+	//Crea una lista con las marcas marcadas por los checkboxes tras pulsar Buscar.
     public List<String> obtenerMarcasMarcadas() {
     	List<String> marcasMarcadas = new ArrayList<String>();
     	
@@ -133,6 +137,7 @@ public class ControllerViewApp {
     	return marcasMarcadas;
     }
 
+    //Binding de las columnas y Filling del combobox.
 	public void initializeLayout() {
 		categoriasPermitidas = new ArrayList<String>();
 		

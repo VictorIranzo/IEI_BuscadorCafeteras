@@ -27,6 +27,7 @@ public class ElCorteInglesDriver {
 		
 		driver = ChromeConnection.initChromeConnection(urlConnection);
 		
+		// Click en la categoría seleccionada en el combobox.
 		getCategorias(categoriasPermitidas);
 		categoriasWebElements.get(articulo).click();
 		
@@ -39,21 +40,26 @@ public class ElCorteInglesDriver {
 		{
 			waitForPageLoad();
 			
+			// Extraemos el número de artículos en la categoría seleccionada.
 			int numeroArticulos = Integer.parseInt(driver.findElement(By.id("product-list-total")).getText().split(" ")[0]);		
 			
+			// Si sólo hay una página con cafeteras...
 			if(numeroArticulos <= 24) {
 				continuar = false;
 			}
 			
 			List<WebElement> elementos = driver.findElements(By.className("product-preview"));
 			for(WebElement element : elementos) 
-			{
-				//String modelo = element.findElement(By.xpath("//h2/a/span")).getText();
+			{				
+				//En todos los elementos usamos waiting para esperar a que rendericen.
+				
 				WebElement modeloElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("info-name"))));
 				String modelo = modeloElement.findElement(By.tagName("a")).getAttribute("title");
 				
 				WebElement marcaElement = waiting.until(ExpectedConditions.elementToBeClickable(element.findElement(By.className("brand"))));
 				String marca = marcaElement.getText();
+				
+				// Cambiamos la marca a como está escrita en nuestro modelo.
 				if(marca.equals("DE'LONGHI")) marca = "DELONGUI";
 				
 				double precioCC = 0;
@@ -62,17 +68,21 @@ public class ElCorteInglesDriver {
 				String precio = divPrecio.getText().substring(0, divPrecio.getText().length()-1);
 				precioCC = Double.parseDouble(precio.replace(",", "."));
 				}catch(TimeoutException e) {
-					//Esta excepción se captura para productos que aparecen y no tienen precio.
+					// Esta excepción se captura para productos que aparecen y no tienen precio.
 				}
 				
-				if(marcas.isEmpty() || marcas.contains(marca)) {
+				// Si hemos filtrado por todas las marcas o la marca de la cafetera coincide con una marcada...
+				if(marcas.isEmpty() || marcas.contains(marca)) 
+				{
 					Cafetera cafetera = new Cafetera(modelo,marca, -1, precioCC);
 					
 					boolean inserted = false;
-					for(Cafetera cafMM : cafeteras) {
+					for(Cafetera cafMM : cafeteras) 
+					{
+						// Buscamos si el modelo de la cafetera actual estaba en MediaMarkt.
 						if(compararCafeteras(cafMM,cafetera)) 
 						{
-							//Si encontramos el mismo modelo, le cambiamos el precio de El Corte Inglés que antes era -1
+							// Si encontramos el mismo modelo, le cambiamos el precio de El Corte Inglés que antes era -1
 							cafMM.setPrecioCorteIngles(precioCC);
 							inserted = true;	
 							break;
@@ -80,7 +90,7 @@ public class ElCorteInglesDriver {
 					}
 					if(!inserted) 
 					{
-						//Si no la hemos encontrado, insertamos con el precio de MediaMarkt a -1
+						// Si no la hemos encontrado, insertamos con el precio de MediaMarkt a -1
 						cafeteras.add(cafetera);
 					}
 				}
@@ -88,19 +98,28 @@ public class ElCorteInglesDriver {
 			
 			if(continuar) 
 			{
+				// Obtenemos todos los botones para navegar entre páginas.
 				List<WebElement> paginasAccesibles = driver.findElement(By.className("pagination")).findElements(By.tagName("a"));
+				
+				// Cogemos el último y miramos si está habilitado y es el botón de Siguiente, ya que podría ser el de otra página.
 				WebElement ultimoBoton = paginasAccesibles.get(paginasAccesibles.size()-1);				
 				continuar = ultimoBoton.isEnabled() && ultimoBoton.getText().equals("Siguiente");
+				
+				// Hacemos scroll hasta ese botón y le hacemos click.
+				// Si estamos en la última página, continuar se habrá evaluado a falso, 
+				// iremos a la página anterior y el bucle se evaluará a false, por lo que cerraremos el navegador.
 				scrollToAnElement(ultimoBoton);
 				ultimoBoton.click();
 			}
 		}
 		
+		// Una vez obtenidas todas las cafeteras, cerramos el navegador.
 		driver.close();
 		
 		return;			
 	}
 	
+	// Creamos tuplas en categoriasWebElements con (Nombre de categoría en nuestro modelo, WebElement)
 	public static void getCategorias(List<String> categoriasPermitidas){		
 		List<WebElement> elementosCategoryClass = (List<WebElement>) driver.findElements(By.className("facet-popup"));
 		
@@ -125,7 +144,6 @@ public class ElCorteInglesDriver {
 	
 	
 	private static void waitForPageLoad() {
-		//TODO: Refactorizar porque no funciona.
 		driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 	}
 	

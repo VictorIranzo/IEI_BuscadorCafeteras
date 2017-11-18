@@ -2,10 +2,10 @@ package app;
 
 public class Cafetera {
 	private String modelo;
-	private String numeroModelo;
-	private String marca;
-	private double precioMediaMarkt;
-	private double precioCorteIngles;
+	private String numeroModelo;		// Se calcula al invocar al constructor.
+	private String marca;				// Siempre en mayúsculas.
+	private double precioMediaMarkt;	// -1 si no existe en MediaMarkt.
+	private double precioCorteIngles;	// -1 si no existe en El Corte Inglés.
 	
 	public Cafetera(String modelo, String marca, double precioMediaMarkt, double precioCorteIngles) {
 		super();
@@ -15,14 +15,6 @@ public class Cafetera {
 		this.precioCorteIngles = precioCorteIngles;
 		this.numeroModelo = obtenerNumeroModelo(modelo);
 	}
-	
-	public Cafetera(String modelo, String marca) {
-		super();
-		this.modelo = modelo;
-		this.marca = marca;
-	}
-
-
 
 	public String getModelo() {
 		return modelo;
@@ -55,6 +47,7 @@ public class Cafetera {
 		this.precioCorteIngles = precioCorteIngles;
 	}
 	
+	// No se usa.
 	@Override
 	public boolean equals(Object o) {
 		return (o instanceof Cafetera) 
@@ -74,7 +67,6 @@ public class Cafetera {
 	        	/* Esto era una buena idea para extraer toda la palabra que contenía a ese carácter, 
 	        	 * pero nos hemos dado cuenta que en MediaMarkt ponen el modelo como CG 343 y en
 	        	 * El Corte inglés como CG343, por lo que no haría matching al comparar 343 con CG343.
-	        	//Retrocedemos hasta el espacio en blanco anterior
 	        	int k;
 	        	for(k=i; k>=0; k--) {
 	        		char c2 = caracteresModelo[k];

@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 public class RunApplication extends Application{
 	@Override
 	public void start(Stage stage) throws IOException {
+		
+		//Cargamos la única IU y llamamos a su método initializeLayout().
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewApp.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root);

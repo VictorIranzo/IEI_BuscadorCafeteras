@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class ChromeConnection {
 	
+	// Inicia un driver en Google Chrome desde la URL que recibe.
 	public static WebDriver initChromeConnection(String urlConnection) {
 		String exePath = "C:\\Selenium\\chromedriver_win32\\chromedriver.exe";
 		System.setProperty("webdriver.chrome.driver", exePath);
